@@ -110,7 +110,7 @@ defmodule SpecialMeetingGen do
 
       state.slash_trainer.type == :tx and state.slash_trainer[:score_tx] >= 0.67 ->
         tx_packed = build_slash_tx(state.slash_trainer)
-        IO.inspect tx_packed
+        IO.inspect {:tick, tx_packed}
         TXPool.insert(tx_packed)
         NodeGen.broadcast(:txpool, :trainers, [[tx_packed]])
         Map.delete(state, :slash_trainer)
@@ -125,7 +125,7 @@ defmodule SpecialMeetingGen do
 
       state.slash_trainer.type == :entry and state.slash_trainer[:score_entry] >= 0.67 ->
         IO.inspect {:entry_with_score, state.slash_trainer[:score_entry]}
-        IO.inspect state.slash_trainer.entry, limit: 1111111111, printable_limit: 1111111111
+        IO.inspect {:sm_entry, state.slash_trainer.entry}, limit: 1111111111, printable_limit: 1111111111
         Fabric.insert_entry(state.slash_trainer.entry, :os.system_time(1000))
         Map.delete(state, :slash_trainer)
       state.slash_trainer.state == :gather_entry_sigs ->

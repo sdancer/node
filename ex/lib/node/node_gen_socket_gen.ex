@@ -57,7 +57,7 @@ defmodule NodeGenSocketGen do
   def handle_info(msg, state) do
     case msg do
       {:udp, _socket, ip, _inportno, data} ->
-        #IO.puts IO.ANSI.red() <> inspect({:relay_from, ip, msg.op}) <> IO.ANSI.reset()
+        #IO.puts IO.ANSI.red() <> inspect({:relay_from, ip}) <> IO.ANSI.reset()
         :erlang.spawn(fn()->
           try do
           case NodeProto.unpack_message_v2(data) do

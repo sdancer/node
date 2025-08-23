@@ -40,7 +40,7 @@ defmodule NodeGen do
 
   def broadcast_check_anr() do
     my_pk = Application.fetch_env!(:ama, :trainer_pk)
-    NodeANR.get_random_unverified(3)
+    NodeANR.get_random_unverified(1)
     |> Enum.filter(& elem(&1,0) != my_pk)
     |> Enum.each(fn({pk, ip})->
       IO.inspect {:anr_request_to, ip}
@@ -110,7 +110,7 @@ defmodule NodeGen do
         state
 
       :tick_anr ->
-        :erlang.send_after(1000, self(), :tick_anr)
+        :erlang.send_after(3000, self(), :tick_anr)
         broadcast_check_anr()
         state
 

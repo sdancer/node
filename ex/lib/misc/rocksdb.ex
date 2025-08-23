@@ -13,7 +13,9 @@ defmodule RocksDB do
             :not_found -> nil
             {:ok, value} ->
                 cond do
-                    opts[:term] -> :erlang.binary_to_term(value, [:safe])
+                    opts[:term] -> 
+                       IO.inspect value, limit: 8888888
+                       :erlang.binary_to_term(value, [:safe])
                     opts[:to_integer] -> :erlang.binary_to_integer(value)
                     true -> value
                 end
