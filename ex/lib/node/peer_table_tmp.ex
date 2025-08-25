@@ -9,11 +9,15 @@ defmodule Node.PeersTemp do
   @expiry_ms           Application.compile_env(:ama, :temp_peer_expiry_ms, 7 * 24 * 60_60_000) # 7d
 
   # Call this once at app boot (e.g., in your application start/1)
-  def ensure_tables! do
-    :ets.new(@temp_tab, [
-      :set, :public, :named_table,
-      {:read_concurrency, true}, {:write_concurrency, true}
-    ]) rescue :already_exists
+  def ensure_tables!() do
+    try do
+      :ets.new(@temp_tab, [
+        :set, :public, :named_table,
+        {:read_concurrency, true}, {:write_concurrency, true}
+      ]) 
+    rescue :already_exists ->
+     nil
+    end
 
     # your NODEPeers likely already exists elsewhere
     :ok
