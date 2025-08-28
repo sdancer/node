@@ -4,9 +4,9 @@ defmodule ConsensusKV do
 
     def kv_put(key, value \\ "", opts \\ %{}) do
         db = Process.get({RocksDB, :ctx})
-        {old_value, exists} = case :rocksdb.transaction_get(db.rtx, db.cf.contractstate, key, []) do
-            :not_found -> {"", false}
-            {:ok, value} -> {value, true}
+        {old_value, exists} = case :ets.lookup(ctx.contractstate, key) do
+            [] -> {"", false}
+            [value] -> {value, true}
         end
 
         value = if opts[:term] do :erlang.term_to_binary(value, [:deterministic]) else value end
@@ -19,7 +19,7 @@ defmodule ConsensusKV do
             Process.put(:mutations_reverse, Process.get(:mutations_reverse, []) ++ [%{op: :delete, key: key}])
         end
 
-        :ok = :rocksdb.transaction_put(db.rtx, db.cf.contractstate, key, value)
+        :ok = :ets.put(ctx.contractstate, key, value)
     end
 
     ## TOO COMPLEX a func for a strong typed 100% always correct lang sorry

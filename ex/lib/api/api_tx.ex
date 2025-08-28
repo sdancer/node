@@ -1,4 +1,10 @@
 defmodule API.TX do
+    def get_tip(num) do
+        tx_id = if byte_size(tx_id) != 32, do: Base58.decode(tx_id), else: tx_id
+        Consensus.chain_tx(tx_id)
+        |> format_tx_for_client()
+    end
+
     def get(tx_id) do
         tx_id = if byte_size(tx_id) != 32, do: Base58.decode(tx_id), else: tx_id
         Consensus.chain_tx(tx_id)

@@ -43,7 +43,7 @@ defmodule NodeGen do
     NodeANR.get_random_unverified(1)
     |> Enum.filter(& elem(&1,0) != my_pk)
     |> Enum.each(fn({pk, ip})->
-      IO.inspect {:anr_request_to, ip}
+      # IO.inspect {:anr_request_to, ip}
       challenge = :os.system_time(1)
       :erlang.spawn(fn()->
         msg = NodeProto.new_phone_who_dis(challenge)

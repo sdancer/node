@@ -111,6 +111,7 @@ defmodule Ama.MultiServer do
                 |> :erlang.binary_to_integer()
                 result = API.Chain.by_height_with_txs(height)
                 quick_reply(state, result)
+
             r.method == "GET" and String.starts_with?(r.path, "/api/chain/tx/") ->
                 txid = String.replace(r.path, "/api/chain/tx/", "")
                 result = API.TX.get(txid)

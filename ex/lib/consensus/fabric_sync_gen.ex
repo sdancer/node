@@ -32,6 +32,12 @@ defmodule FabricSyncGen do
     {:noreply, state}
   end
 
+  def handle_call({:sync_entry, entry, attest, consensus}, _from, state) do
+    {:reply, :ok, state}
+  end
+
+
+
   def tick() do
     temporal = Consensus.chain_tip_entry()
     temporal_height = temporal.header_unpacked.height
@@ -48,7 +54,7 @@ defmodule FabricSyncGen do
       highest_peers_temporal = NodePeers.highest_height(%{min_temporal: upper_bound_temporal, sort: :temporal})
       len_holes_temp = length(next_temporal_holes)
       if len_holes_temp > 2 do
-        IO.puts "Syncing #{len_holes_temp} entries"
+        #IO.puts "Syncing #{len_holes_temp} entries (#{inspect(hd(next_temporal_holes))})"
       end
       Enum.chunk_every(next_temporal_holes, 30)
       |> Enum.each(fn(chunk)->

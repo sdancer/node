@@ -62,7 +62,8 @@ defmodule NodeState do
       send(NodeGen, {:handle_sync, :ping_ns, istate, term})
     catch
       e,{:badmatch, %{error: :wrong_epoch}} -> nil
-      e,r -> IO.inspect {:error_ping, e, r, term, istate.peer.ip}
+      e,r -> #IO.inspect {:error_ping, e, r, term, istate.peer.ip}
+      nil
     end
   end
   def handle(:ping_ns, istate, term) do
