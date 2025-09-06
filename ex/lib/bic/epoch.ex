@@ -173,6 +173,15 @@ defmodule BIC.Epoch do
             end
         end)
 
+
+        # update next epoch diff 
+        prev_bits = BIC.Epoch.Difficulty.difficulty_bits(epoch_fin)
+        bits_next = BIC.Epoch.Difficulty.next_bits_from(prev_bits, total_sols)
+
+        kv_put("bic:epoch:solutions_total:#{epoch_fin}", total_sols)
+        kv_put("bic:epoch:difficulty_bits:#{epoch_fin}", prev_bits)
+        kv_put("bic:epoch:difficulty_bits:#{epoch_next}", bits_next)
+
         kv_clear("bic:epoch:solbloom:")
         kv_clear("bic:epoch:solutions_count:")
 
