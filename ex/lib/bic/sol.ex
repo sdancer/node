@@ -21,6 +21,11 @@ defmodule BIC.Sol do
         %{epoch: epoch, pk: sol_pk, pop: pop, computor: computor_pk}
     end
 
+    def verify_hash(epoch, hash) when epoch >= 285 do
+        bits = BIC.Epoch.Difficulty.difficulty_bits(epoch)
+        <<x::unsigned-size(bits), _::binary>> = hash
+        x == 0
+    end
     def verify_hash(epoch, hash) when epoch >= 244 do
         <<a, b, c, _::binary>> = hash
         a == 0 and b == 0 and c == 0
